@@ -205,6 +205,6 @@ for index in range(n) :
         print(f"nilai x{i+1}: {xi['x1']} \t\t nilai f(x{i+1}): {func(xi['x1'])}")
 
     print()
-    print(f"Nilai Gbest: {Gbest}")
-    print(f"Nilai Minimum f(x): {func(Gbest)}")
-    print()
+print(f"Nilai Gbest: {Gbest}")
+print(f"Nilai Minimum f(x): {func(Gbest)}")
+print()

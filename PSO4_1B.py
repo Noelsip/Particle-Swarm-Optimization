@@ -3,7 +3,7 @@ import math
 
 # Fungsi X
 def func(x):
-    return (3 * x * math.sin(x))
+    return (-3 * x * math.sin(x))
 
 # Inisialisasi variabel-variabel lainnya
 c1 = 1

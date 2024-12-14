@@ -1,6 +1,6 @@
 # 🔵Tugas Akhir Mata Kuliah Pengantar Probabilitas dan Optimasi
 
-## Particle Swarm Optimization (PSO)
+## 🔴Particle Swarm Optimization (PSO)
 Particle Swarm Optimization (PSO) adalah algoritma optimasi berbasis metaheuristik yang meniru perilaku sosial kelompok, seperti kawanan burung atau ikan, untuk menemukan solusi optimal dalam sebuah ruang pencarian.
 PSO pertama kali diperkenalkan oleh Kennedy dan Eberhart pada tahun 1995 dan digunakan secara luas dalam berbagai aplikasi optimasi.
 
@@ -40,7 +40,7 @@ Posisi diperbarui menggunakan formula:
 6. Ulangi:
    * Lakukan proses dari evaluasi hingga perbaruan kecepatan dan posisi sampai kriteria penghentian terpenuhi.
 
-## Algoritma Djikstra
+## 🔴Algoritma Djikstra
 Algoritma Dijkstra adalah algoritma yang digunakan untuk menemukan jalur terpendek dari satu simpul (node) ke semua simpul lain dalam graf berbobot.
 Algoritma ini dirancang oleh Edsger W. Dijkstra pada tahun 1956 dan sering digunakan dalam aplikasi seperti sistem navigasi, jaringan komputer, dan perencanaan rute.
 

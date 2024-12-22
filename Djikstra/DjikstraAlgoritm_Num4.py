@@ -1,64 +1,80 @@
 from collections import defaultdict
+import heapq
 
-# Initialisasi konstan INFINITY sebagai nilai tak terhingga
+# Konstanta INFINITY untuk nilai tak terhingga
 INFINITY = float('inf')
 
 class Graph:
-    # Fungsi untuk mendefinisikan graf sebagai dictionary dengan nilai default dictionary
     def __init__(self):
         self.graph = defaultdict(dict)
-        
+        self.nodes = set()
+
     # Fungsi untuk menambahkan edge ke graf
     def addEdge(self, x, y, w):
-        if x not in self.graph:
-            self.graph[x] = {}
-        if y not in self.graph:
-            self.graph[y] = {}
         self.graph[x][y] = w
-    
-    # fungsi untuk menampilkan graf
-    def __str__(self):
-        for k, v in self.graph.items():
-            print("%s -> %s" % (k, v))
-    
-    # Fungsi untuk mencari jalur terpendek dari node sumber ke node tujuan
-    def dijkstra(self, src, dest, visited=[], distances={}, predecessors={}):
-        if src not in self.graph:
-            raise TypeError("Node Sumber tidak ada di graf")
-        if dest not in self.graph:
-            raise TypeError("Node tujuan tidak ada di graf")
-        if src == dest:
-            path=[]
-            pred=dest
-            while pred != None:
-                path.append(pred)
-                pred=predecessors.get(pred,None)
-            path.reverse()
-            
-            # Cetak jalur terpendek dan biayanya
-            print()
-            print('Shortest path: ' + ' -> '.join(path) + " \ncost=" + str(distances[dest]))
-            return (path,distances[dest])
-        
-        else :
-            if not visited:
-                distances[src]=0
-            for neighbor in self.graph[src]:
-                if neighbor not in visited:
-                    new_distance = distances[src] + self.graph[src][neighbor]
-                    if new_distance < distances.get(neighbor,INFINITY):
-                        distances[neighbor] = new_distance
-                        predecessors[neighbor] = src 
-                        
-        visited.append(src)
-        unvisited={}
-        for k in self.graph:
-            if k not in visited:
-                unvisited[k] = distances.get(k,INFINITY)
-        x=min(unvisited, key=unvisited.get)
-        self.dijkstra(x, dest, visited, distances, predecessors)
-        
-# membuat instance dari kelas Graph
+        self.nodes.update([x, y])
+
+    # Fungsi untuk menjalankan algoritma Dijkstra
+    def dijkstra(self, src):
+        distances = {node: INFINITY for node in self.nodes}
+        predecessors = {node: None for node in self.nodes}
+        distances[src] = 0
+        pq = [(0, src)]
+        visited = set()
+
+        # Format header tabel
+        nodes_sorted = sorted(self.nodes)
+        print(f"{'Step':<5} {'|':<2} {' | '.join(nodes_sorted):<70}")
+        print("-" * (8 + len(nodes_sorted) * 7))
+
+        step = 0
+
+        # Proses Dijkstra
+        while pq:
+            current_distance, current_node = heapq.heappop(pq)
+
+            if current_node in visited:
+                continue
+
+            visited.add(current_node)
+
+            # Menampilkan langkah-langkah sebagai baris tabel
+            self.print_step(step, distances, nodes_sorted)
+            step += 1
+
+            for neighbor, weight in sorted(self.graph[current_node].items(), key=lambda x: x[1]):
+                distance = current_distance + weight
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    predecessors[neighbor] = current_node
+                    heapq.heappush(pq, (distance, neighbor))
+
+        # Menampilkan jarak terpendek setelah tabel
+        self.print_shortest_distances(src, distances, predecessors)
+        return distances
+
+    # Fungsi untuk mencetak baris tabel
+    def print_step(self, step, distances, nodes_sorted):
+        row = [f"{distances[node]:<3}" if distances[node] < INFINITY else "∞" for node in nodes_sorted]
+        print(f"{step:<5} | {' | '.join(row)}")
+
+    # Fungsi untuk mencetak jarak dan jalur terpendek setelah tabel
+    def print_shortest_distances(self, src, distances, predecessors):
+        print("\nShortest distances:")
+        sorted_distances = sorted(distances.items(), key=lambda x: x[1])  # Urutkan berdasarkan jarak
+        for node, distance in sorted_distances:
+            if distance < INFINITY and node != src:
+                print(f"Jarak terpendek dari {src} menuju {node} adalah {distance}")
+                # Cetak jalur setelah jarak
+                path = []
+                current = node
+                while current:
+                    path.append(current)
+                    current = predecessors[current]
+                path.reverse()
+                print(" -> ".join(path))
+
+# Membuat instance graf
 g = Graph()
 g.addEdge('v1','v2',6)
 g.addEdge('v1','v3',5)
@@ -73,5 +89,5 @@ g.addEdge('v6','v5',5)
 g.addEdge('v6','v7',2)
 g.addEdge('v7','v8',6)
 
-# Mencari dan menampilkan jalur terpendek dari awal ke tujuan
-g.dijkstra('v1', 'v8')
+# Menjalankan algoritma Dijkstra dari node A
+g.dijkstra('v1')
